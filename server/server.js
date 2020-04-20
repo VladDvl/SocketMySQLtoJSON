@@ -24,7 +24,7 @@ global.arr2 = [];
 io.sockets.on('connection', function (socket) {
     socket.emit('echo', 'server send message');
     setInterval(function () {
-        db.query('SELECT ID FROM messages WHERE status="PUBLISHED" AND resiver_id IS NULL AND group_id IS NULL ORDER BY ID DESC LIMIT 1', function (err, row) {
+        db.query('SELECT ID FROM messages WHERE status="PUBLISHED" ORDER BY ID DESC LIMIT 1', function (err, row) {
             if (err) throw err;
             socket.emit('echo', global.arr);
             global.new_id = row[0].ID;
@@ -32,7 +32,7 @@ io.sockets.on('connection', function (socket) {
             if (new_id_new != new_id) {
                 socket.emit('echo', row[0].ID + ' --- --- \n');
                 global.new_id_new = global.new_id;
-                db.query('SELECT * FROM messages WHERE status="PUBLISHED" AND resiver_id IS NULL AND group_id IS NULL ORDER BY ID ASC LIMIT 100', function (err, rows) {
+                db.query('SELECT * FROM messages WHERE status="PUBLISHED" ORDER BY ID ASC LIMIT 100', function (err, rows) {
                     if (err) throw err;
                     console.log('Data received from Db:\n');
                     console.log(rows);
